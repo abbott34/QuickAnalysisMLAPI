@@ -82,7 +82,7 @@ def linearReg(X_train, X_test, Y_train, Y_test, parameter_fit_intercept=True, pa
 
 def SVR(X_train, X_test, Y_train, Y_test):
     reg = svm.SVR(kernel=parameter_kernel,
-                  tol=parameter_tol, C=parameter_c, random_state=1)
+                  tol=parameter_tol, C=parameter_c)
     reg = reg.fit(X_train, Y_train)
     results(X_train, Y_train, X_test, Y_test, reg, "Support Vector Regression")
 
@@ -169,6 +169,7 @@ def build_model(df):
     st.markdown('**Independent Variables**:')
     independent_variables = st.multiselect(
         "Choose the independent variables", indep_cols)
+    st.markdown('**Cross Validation**:')
     X = df[independent_variables]
     Y = df[dependent_variable]
     fig, ax = plt.subplots()
@@ -263,6 +264,9 @@ if challenge is not None:
                 split_size = st.sidebar.slider(
                     'Data split ratio (% for Training Set)', 10, 95, 80, 5)
             # Sidebar - Multilinear Regression
+            with st.sidebar.header('2.2 Set Cross Validation Folds'):
+                cross_valid = st.slider(
+                    'Number of folds', 1, 20, 10, 1)
             if "Multilinear Regression" in model:
                 with st.sidebar.subheader('Linear Regression Learning Parameters'):
                     parameter_fit_intercept = st.sidebar.select_slider(
